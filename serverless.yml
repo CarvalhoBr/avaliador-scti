@@ -22,4 +22,9 @@ package:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: build/index.hello
+    events:
+      - http:
+          path: /
+          method: get
+          cors: true
