@@ -14,7 +14,7 @@ provider:
 
 package:
   exclude:
-    - .env.*
+    - example.env
     - node_modules/**/aws-sdk/**
     - .git/**
     - .gitignore

@@ -1,7 +1,8 @@
+import './config/dotenv'
 import { Context, APIGatewayEvent} from 'aws-lambda'
 
 export const hello = (event: APIGatewayEvent, context: Context, callback: any) => {
-  console.log('Lambda working')
+  console.log(`Lambda working in stage ${process.env.NODE_ENV}`)
   const response = {
     statusCode: 200,
     headers: {
