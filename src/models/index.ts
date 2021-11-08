@@ -1,5 +1,9 @@
+import Speaker from "./Speaker";
+
 const getModels = () => {
-  return [];
+  return [
+    Speaker
+  ];
 };
 
 export default getModels;

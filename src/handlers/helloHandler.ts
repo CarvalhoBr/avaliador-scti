@@ -1,15 +1,17 @@
 import { Context, APIGatewayEvent} from 'aws-lambda'
+import Speaker from '../models/Speaker';
 
-const hello = (event: APIGatewayEvent, context: Context, callback: any) => {
-  console.log(`Lambda working in stage ${process.env.NODE_ENV}`)
+const hello = async (event: APIGatewayEvent, context: Context, callback: any) => {
+  
+  const speakers = await Speaker.findAll()
+  
   const response = {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
+      speakers
     }),
   };
 
