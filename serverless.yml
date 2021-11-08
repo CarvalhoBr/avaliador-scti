@@ -28,3 +28,11 @@ functions:
           path: /
           method: get
           cors: true
+
+  createWorkshop:
+    handler: build/index.createWorkshop
+    events:
+      - http:
+          path: /workshops
+          method: post
+          cors: true

@@ -1,8 +1,10 @@
 import Speaker from "./Speaker";
+import { Workshop } from "./Workshop";
 
 const getModels = () => {
   return [
-    Speaker
+    Speaker,
+    Workshop
   ];
 };
 
