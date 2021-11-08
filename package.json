@@ -23,6 +23,7 @@
     "middy": "^0.36.0",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^6.9.0",
     "sequelize-typescript": "^2.1.1"
   }

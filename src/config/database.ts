@@ -3,7 +3,6 @@ const database = {
   dialect: 'postgres',
   host: process.env.DB_HOST,
   migrationStorageTableName: 'schema_migrations',
-  operatorsAliases: false,
   pool: {
     min: 0,
     max: 1
