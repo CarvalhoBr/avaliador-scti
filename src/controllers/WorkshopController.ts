@@ -1,22 +1,26 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
-import SpeakerRepository from "../repositories/SpeakerRepository";
+import VerificationEmailQueue from "../queues/VerificationEmailQueue";
 import WorkshopRepository from "../repositories/WorkshopRepository";
 import validator from "../validators";
 import { workshopCreate } from "../validators/schemas/workshop";
 
 export default class WorkshopController {
   private workshopRepository: WorkshopRepository;
+  private verificationEmailQueue: VerificationEmailQueue;
 
   constructor(
     workshopRepository: WorkshopRepository,
+    verificationEmailQueue: VerificationEmailQueue
   ) {
     this.workshopRepository = workshopRepository;
+    this.verificationEmailQueue = verificationEmailQueue;
     this.create = this.create.bind(this);
   }
 
   static getInstance(): WorkshopController {
     return new WorkshopController(
       WorkshopRepository.getInstance(),
+      new VerificationEmailQueue()
     );
   }
 
@@ -34,6 +38,8 @@ export default class WorkshopController {
       }else{
         workshop = await this.workshopRepository.create(body);
       }
+
+      await this.verificationEmailQueue.enqueue(workshop);
 
       callback(null, {
         statusCode: 201,
