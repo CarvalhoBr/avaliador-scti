@@ -1,4 +1,5 @@
-import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import Speaker from "./Speaker";
 
 @Table({
   tableName: "workshops",
@@ -18,6 +19,7 @@ export class Workshop extends Model<Workshop> {
   @Column(DataType.DATE)
   public date: Date;
 
+  @ForeignKey(() => Speaker)
   @Column({
     type: DataType.INTEGER,
     field: "speaker_id"
@@ -35,4 +37,7 @@ export class Workshop extends Model<Workshop> {
     field: "updated_at"
   })
   public updatedAt: Date;
+
+  @BelongsTo(() => Speaker)
+  public speaker: Speaker;
 }

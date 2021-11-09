@@ -13,6 +13,9 @@ const validator = (data: any, schema: Joi.ObjectSchema) => {
       if (err.context?.key) {
         accumulate[err.context.key] = err.message;
       }
+      if (err.context?.peers){
+        accumulate[err.context.peers.join('-')] = `${err.context.peers.join(' or ')} are required`;
+      }
 
       return accumulate;
     }, {});

@@ -1,4 +1,5 @@
-import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, Column, DataType, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Workshop } from "./Workshop";
 
 @Table({
   tableName: "speakers"
@@ -34,5 +35,8 @@ export default class Speaker extends Model<Speaker> {
     field: "updated_at"
   })
   public updatedAt: Date;
+
+  @HasMany(() => Workshop)
+  public workshops: Workshop[];
 
 }
