@@ -1,4 +1,5 @@
-import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, HasMany, Model, PrimaryKey, Table } from "sequelize-typescript";
+import Rating from "./Rating";
 import Speaker from "./Speaker";
 
 @Table({
@@ -40,4 +41,7 @@ export class Workshop extends Model<Workshop> {
 
   @BelongsTo(() => Speaker)
   public speaker: Speaker;
+
+  @HasMany(() => Rating)
+  public ratings: Rating[];
 }

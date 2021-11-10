@@ -20,6 +20,20 @@ export default class Rating extends Model<Rating>{
   @Column(DataType.INTEGER)
   public rating: number;
 
+  @Column({
+    allowNull: false,
+    type: DataType.DATE,
+    field: "created_at"
+  })
+  public createdAt: Date;
+ 
+  @Column({
+    allowNull: false,
+    type: DataType.DATE,
+    field: "updated_at"
+  })
+  public updatedAt: Date;
+
   @BelongsTo(() => Workshop)
   public workshop: Workshop;
 

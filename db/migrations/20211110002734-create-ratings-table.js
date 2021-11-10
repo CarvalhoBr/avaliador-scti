@@ -17,9 +17,19 @@ module.exports = {
           key: "id",
         },
       },
-      rate: {
+      rating: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Date.now()
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Date.now(),
       },
     });
   },
