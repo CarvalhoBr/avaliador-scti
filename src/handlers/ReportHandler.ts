@@ -10,7 +10,7 @@ export default class ReportHandler {
       new ReportEmailQueue()
     )
   }
-  
+
   constructor(
     private workshopRepository: WorkshopRepository,
     private reportEmailQueue: ReportEmailQueue
@@ -23,14 +23,15 @@ export default class ReportHandler {
       const workshops = await this.workshopRepository.getWorkshopWithRatings()
 
       if(!workshops || workshops.length === 0) {
-        return
+        console.log('No workshops to report')
       }
 
-      const promises = workshops?.map(workshop => {
+      const promises = workshops?.map((workshop: any) => {
         return this.reportEmailQueue.enqueue(workshop)
       })
 
       await Promise.all(promises)
+      return
     } catch (error) {
       throw error
     }

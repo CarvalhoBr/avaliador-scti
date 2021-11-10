@@ -33,7 +33,7 @@ export default class WorkshopRepository extends BaseRepository<Workshop>{
     return workshop;
   }
 
-  public async getWorkshopWithRatings(): Promise<IWorkshopWithRating[]>{
+  public async getWorkshopWithRatings(): Promise<any>{
     const ratings = await this.model.sequelize?.query(`
       select ws.id, ws.title, sp.name, sp.email, avg(rt.rating) rating
       from workshops ws
@@ -42,6 +42,6 @@ export default class WorkshopRepository extends BaseRepository<Workshop>{
       group by ws.id, sp.name, sp.email
     `) as any
 
-    return (ratings.rows) as IWorkshopWithRating[]
+    return ratings[0] as any[]
   }
 }
