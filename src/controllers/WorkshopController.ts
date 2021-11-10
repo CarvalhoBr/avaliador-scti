@@ -1,26 +1,26 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import VerificationEmailQueue from "../queues/VerificationEmailQueue";
+import RatingsRepository from "../repositories/RatingsRepository";
 import WorkshopRepository from "../repositories/WorkshopRepository";
 import validator from "../validators";
-import { workshopCreate } from "../validators/schemas/workshop";
+import { workshopCreate, workshopRate } from "../validators/schemas/workshop";
 
 export default class WorkshopController {
-  private workshopRepository: WorkshopRepository;
-  private verificationEmailQueue: VerificationEmailQueue;
 
   constructor(
-    workshopRepository: WorkshopRepository,
-    verificationEmailQueue: VerificationEmailQueue
+    private workshopRepository: WorkshopRepository,
+    private verificationEmailQueue: VerificationEmailQueue,
+    private ratingsRepository: RatingsRepository
   ) {
-    this.workshopRepository = workshopRepository;
-    this.verificationEmailQueue = verificationEmailQueue;
     this.create = this.create.bind(this);
+    this.rate = this.rate.bind(this);
   }
 
   static getInstance(): WorkshopController {
     return new WorkshopController(
       WorkshopRepository.getInstance(),
-      new VerificationEmailQueue()
+      new VerificationEmailQueue(),
+      new RatingsRepository()
     );
   }
 
@@ -50,6 +50,39 @@ export default class WorkshopController {
       callback(null, {
         statusCode: 400,
         body: String(error),
+      })
+    }
+  }
+
+  async rate(event: APIGatewayEvent, context: Context, callback: any) {
+    try {
+      const body = validator(
+        JSON.parse(event.body as string),
+        workshopRate()
+      )
+      const workshopId = event.pathParameters?.workshopId
+  
+      if(!workshopId){
+        callback(null, {
+          statusCode: 400,
+          body: 'workshopId is required'
+        })
+      }
+  
+      const workshop = await this.workshopRepository.findById(Number(workshopId))
+      const rate = await this.ratingsRepository.create({
+        workshopId: workshop.id,
+        rating: body.rate
+      } as any)
+  
+      return callback(null, {
+        statusCode: 204,
+        body: JSON.stringify(rate)
+      })
+    } catch (error: any) {
+      callback(null, {
+        statusCode: error.status || 500,
+        body: String(error.message) || ""
       })
     }
   }

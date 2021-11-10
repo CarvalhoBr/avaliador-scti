@@ -48,6 +48,14 @@ functions:
           arn: { Fn::GetAtt: [VerificationEmailQueue, Arn] }
           batchSize: 1
 
+  rateWorkshop:
+    handler: build/index.rateWorkshop
+    events:
+      - http:
+          path: /workshops/{workshopId}/ratings
+          method: post
+          cors: true
+
 resources:
   Resources:
     VerificationEmailQueue:

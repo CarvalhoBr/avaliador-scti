@@ -16,3 +16,6 @@ export const createWorkshop = middy(workshopController.create)
 
 export const sendVerificationEmail = middy(verificationEmailHandler.process)
   .use(registerMiddleware())
+
+export const rateWorkshop = middy(workshopController.rate)
+  .use(registerMiddleware())

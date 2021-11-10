@@ -8,3 +8,8 @@ export const workshopCreate = () => Joi.object({
   speakerId: Joi.number(),
   speaker: speakerSchema(),
 }).or("speakerId", "speaker");
+
+
+export const workshopRate = () => Joi.object({
+  rate: Joi.number().min(0).max(10).required()
+});

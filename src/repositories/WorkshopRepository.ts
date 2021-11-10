@@ -1,3 +1,4 @@
+import NotFoundException from "../exceptions/NotFoundException";
 import Speaker from "../models/Speaker";
 import { Workshop } from "../models/Workshop";
 import { BaseRepository } from "./BaseRepository";
@@ -21,5 +22,13 @@ export default class WorkshopRepository extends BaseRepository<Workshop>{
     await createdWorkshop.save()
 
     return createdWorkshop;
+  }
+
+  async findById(id: number): Promise<Workshop> {
+    let workshop = await this.model.findByPk(id);
+    if(!workshop) {
+      throw new NotFoundException("Workshop not found");
+    }
+    return workshop;
   }
 }
