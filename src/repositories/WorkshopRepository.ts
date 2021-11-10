@@ -1,4 +1,5 @@
 import NotFoundException from "../exceptions/NotFoundException";
+import { IWorkshopWithRating } from "../interfaces/IWorkshopWithRating";
 import Speaker from "../models/Speaker";
 import { Workshop } from "../models/Workshop";
 import { BaseRepository } from "./BaseRepository";
@@ -30,5 +31,17 @@ export default class WorkshopRepository extends BaseRepository<Workshop>{
       throw new NotFoundException("Workshop not found");
     }
     return workshop;
+  }
+
+  public async getWorkshopWithRatings(): Promise<IWorkshopWithRating[]>{
+    const ratings = await this.model.sequelize?.query(`
+      select ws.id, ws.title, sp.name, sp.email, avg(rt.rating) rating
+      from workshops ws
+      inner join ratings rt on rt.workshop_id = ws.id
+      inner join speakers sp on ws.speaker_id = sp.id 
+      group by ws.id, sp.name, sp.email
+    `) as any
+
+    return (ratings.rows) as IWorkshopWithRating[]
   }
 }
