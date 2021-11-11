@@ -62,6 +62,13 @@ functions:
       - schedule:
           rate: rate(1 minute)
           enabled: false
+  
+  ratingEmail:
+    handler: build/index.ratingEmail
+    events:
+      - sqs:
+          arn: { Fn::GetAtt: [ReportEmailQueue, Arn] }
+          batchSize: 1
 
 resources:
   Resources:

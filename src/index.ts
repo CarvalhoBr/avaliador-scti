@@ -5,12 +5,12 @@ import registerMiddleware from './middlewares/registerMiddleware'
 import WorkshopController from './controllers/WorkshopController'
 import VerificationEmailHandler from './handlers/VerificationEmailHandler'
 import ReportHandler from './handlers/ReportHandler'
-import WorkshopRepository from './repositories/WorkshopRepository'
-import { ReportEmailQueue } from './queues/ReportEmailQueue'
+import ReportEmailHandler from './handlers/ReportEmailHandler'
 
 const workshopController = WorkshopController.getInstance()
 const verificationEmailHandler = VerificationEmailHandler.getInstance()
 const reportHandler = ReportHandler.getInstance()
+const reportEmailHandler = ReportEmailHandler.getInstance()
 
 export const hello = middy(helloHandler)
   .use(registerMiddleware())
@@ -25,4 +25,7 @@ export const rateWorkshop = middy(workshopController.rate)
   .use(registerMiddleware())
 
 export const ratingReport = middy(reportHandler.handler)
+  .use(registerMiddleware())
+
+export const ratingEmail = middy(reportEmailHandler.handler)
   .use(registerMiddleware())

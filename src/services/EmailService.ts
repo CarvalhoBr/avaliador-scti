@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import ApiException from '../exceptions/ApiException';
+import ConsumerException from '../exceptions/ConsumerException';
 
 export default class EmailService {
   private transporter: nodemailer.Transporter;
@@ -15,6 +17,10 @@ export default class EmailService {
   }
 
   async sendMail(message: nodemailer.SendMailOptions): Promise<void> {
-    await this.transporter.sendMail(message);
+    try {
+      await this.transporter.sendMail(message);
+    } catch (error) {
+      throw new ConsumerException(`Erro ao enviar email: ${JSON.stringify(error)}`)
+    }
   }
 }

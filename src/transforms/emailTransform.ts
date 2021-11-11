@@ -19,3 +19,22 @@ export const verificationEmail = (workshop: any, speaker: any): nodemailer.SendM
     from: process.env.FROM_EMAIL
   }
 }
+
+export const ratingReport = (body: any): nodemailer.SendMailOptions => {
+  return {
+    html: `
+      <h1>Olá, ${body.name}</h1>
+      <p> Aqui está seu relatório diário de avaliações </p>
+      <p> Nome do workshop: ${body.title} </p>
+      <p> Avaliação: ${Number(body.rating).toFixed(2)} </p>
+    `,
+    text: `Olá, ${body.name}
+     Aqui está seu relatório diário de avaliações 
+     Nome do workshop: ${body.title} 
+     Avaliação: ${Number(body.rating).toFixed(2)} 
+    `,
+    subject: 'Relatório de avaliações do seu workshop',
+    to: body.email,
+    from: process.env.FROM_EMAIL
+  }
+}
